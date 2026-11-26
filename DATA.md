@@ -1,0 +1,1 @@
+Put your own real Hacker News dataset here as `HNStories.jsonl` (JSON Lines), `HNStories.json`, or CSV. `demo_stories.jsonl` is synthetic and intended only to test the workflow. Large raw files are excluded from Git. The source ZIP included only a Git LFS pointer for the original 427 MB object.

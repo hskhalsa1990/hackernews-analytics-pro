@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hackernews-analytics-pro"
+version = "18.19.0"
+description = "Hacker News analytics with NLP, explainable research, temporal topic evolution, snapshot trend baselines, walk-forward validation, calibration diagnostics, chronological model benchmarking, author/domain cohort profiling, drift screening, TF-IDF content recommendations, optional sentence-embedding semantic discovery and topic clustering, author-topic graph intelligence, network robustness diagnostics, live monitoring and story momentum intelligence"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["pandas>=2.1", "numpy>=1.26", "scikit-learn>=1.4,<2.0", "requests>=2.31"]
+
+[project.optional-dependencies]
+viz = ["matplotlib>=3.8", "seaborn>=0.13", "plotly>=5.18"]
+dashboard = ["streamlit>=1.35", "plotly>=5.18"]
+ai = ["networkx>=3.2", "sentence-transformers>=3.0,<6.0"]
+spark = ["pyspark>=3.5,<4.0", "pandas>=2.1,<3.0"]
+
+[tool.setuptools]
+py-modules = ["hn_analytics", "hn_advanced", "hn_analytics_core", "hn_benchmark_v10", "hn_cleaning", "hn_cli", "hn_compare", "hn_dashboard", "hn_dashboard_v18", "hn_data_loader", "hn_digest", "hn_doctor", "hn_graph_v15", "hn_intelligence", "hn_live", "hn_network_v16", "hn_nlp", "hn_prediction", "hn_predictive", "hn_profile_v12", "hn_query", "hn_recommend_v13", "hn_reporting", "hn_research_v8", "hn_robustness_v17", "hn_semantic_v14", "hn_server", "hn_stats", "hn_temporal_v9", "hn_visualization", "hn_walkforward_v11"]
+
+[project.scripts]
+hn-analytics = "hn_cli:main"

@@ -1,0 +1,21 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e . pytest
+      - run: python -m pytest -q
+      - name: CLI smoke test
+        run: |
+          hn-analytics --version
+          hn-analytics doctor
+          hn-analytics digest --input demo_stories.jsonl --db none.sqlite --output-dir "$RUNNER_TEMP/out"
+          hn-analytics query --input demo_stories.jsonl --keyword rust --limit 3 --output "$RUNNER_TEMP/out/rust.csv"

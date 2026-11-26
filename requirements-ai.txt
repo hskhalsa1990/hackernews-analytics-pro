@@ -1,0 +1,4 @@
+# Optional graph visualization support; core v8 graph export uses JSON and has no extra dependency.
+networkx>=3.2
+# Optional contextual sentence embeddings for v14 semantic discovery
+sentence-transformers>=3.0,<6.0

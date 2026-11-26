@@ -1,0 +1,4 @@
+-r requirements.txt
+pyspark>=3.5,<4.0
+# pyspark 3.5 targets pandas 2.x; keep the cap here only
+pandas>=2.1,<3.0
