@@ -2,6 +2,83 @@
 
 A reproducible Hacker News analytics workbench combining data cleaning, exploratory statistics, NLP baselines, live collection, SQLite snapshot monitoring, predictive research, chronological model benchmarking, walk-forward validation, **author/domain cohort profiling and chronological drift screening**. v15 adds author-topic graph analysis; v16 adds **weighted PageRank and threshold-based author overlap communities**.
 
+## Visual overview
+
+> All figures below are generated from the bundled **synthetic demo dataset** (72 stories) so they run anywhere. They show what the tools produce, not real Hacker News findings. Regenerate them with `python generate_figures.py` (or pass your own `.jsonl` file).
+
+### Architecture
+
+![Architecture](fig_01_architecture.png)
+
+### 3D views
+
+| 3D engagement map (hour x comments x points) | 3D bars (weekday x time of day) |
+|---|---|
+| ![3D scatter](fig_02_3d_engagement_scatter.png) | ![3D bars](fig_03_3d_weekday_hour_bars.png) |
+
+### Charts and graphs
+
+![Distributions](fig_04_distributions.png)
+
+![Top domains and authors](fig_05_top_domains_authors.png)
+
+![Daily trend](fig_06_daily_trend.png)
+
+![Correlation heatmap](fig_07_correlation_heatmap.png)
+
+### Model comparison (chronological 80/20 holdout)
+
+![Model comparison](fig_08_model_comparison.png)
+
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC | Brier |
+|---|---:|---:|---:|---:|---:|---:|
+| Logistic regression | 0.867 | 0.333 | 1.000 | 0.500 | 0.857 | 0.173 |
+| Random forest | 0.733 | 0.200 | 1.000 | 0.333 | 0.857 | 0.188 |
+| Extra trees | 0.800 | 0.250 | 1.000 | 0.400 | 0.786 | 0.166 |
+
+Only 15 stories are in the test split, so these numbers are a smoke test of the pipeline, not evidence that one model is better. Use a real dataset and the walk-forward command (`hn-analytics walkforward`) before drawing conclusions.
+
+### Network structure
+
+![PageRank and topics](fig_09_network_pagerank_topics.png)
+
+![Author-topic graph](fig_10_author_topic_graph.png)
+
+## Feature comparison
+
+| Area | Command | Module | Needs | Output |
+|---|---|---|---|---|
+| Dataset summary | `stats` | `hn_stats.py` | core | text / JSON |
+| Compare two datasets | `compare` | `hn_compare.py` | core | text / JSON |
+| Filter and search | `query` | `hn_query.py` | core | table / CSV / JSON |
+| Digest briefing | `digest` | `hn_digest.py` | core | Markdown / HTML |
+| Virality + anomalies | `research` | `hn_predictive.py` | scikit-learn | CSV / JSON |
+| Explainability, topic network | `intelligence` | `hn_research_v8.py` | scikit-learn | CSV / JSON |
+| Topic evolution | `temporal` | `hn_temporal_v9.py` | core | CSV / JSON |
+| Model benchmark | `benchmark` | `hn_benchmark_v10.py` | scikit-learn | CSV / JSON |
+| Walk-forward validation | `walkforward` | `hn_walkforward_v11.py` | scikit-learn | CSV / JSON |
+| Cohort and drift | `profile` | `hn_profile_v12.py` | core | CSV / JSON |
+| Recommendations | `recommend` | `hn_recommend_v13.py` | scikit-learn | CSV / JSON |
+| Semantic discovery | `semantic` | `hn_semantic_v14.py` | optional `ai` extra | CSV / JSON |
+| Author-topic graph | `graph` | `hn_graph_v15.py` | core | CSV / JSON |
+| PageRank + communities | `network` | `hn_network_v16.py` | core | CSV / JSON |
+| Robustness | `robustness` | `hn_robustness_v17.py` | core | CSV / JSON |
+| Live feed and snapshots | `fetch`, `monitor`, `insights`, `watch` | `hn_live.py` | internet | JSONL / SQLite |
+| Local web page + API | `serve` | `hn_server.py` | core | HTTP (127.0.0.1) |
+| Health check | `doctor` | `hn_doctor.py` | core | text |
+
+### Analysis approach comparison
+
+| Approach | Best for | Limitation |
+|---|---|---|
+| Single chronological holdout (`benchmark`) | Fast model comparison | One split can be lucky or unlucky |
+| Walk-forward (`walkforward`) | Time-period stability, calibration | Needs enough history |
+| Cohort + drift (`profile`) | Author/domain behaviour over time | Descriptive, not causal |
+| TF-IDF recommendations (`recommend`) | Offline, no extra install | Word overlap only |
+| Semantic embeddings (`semantic`) | Meaning-based similarity | Larger optional install |
+| PageRank network (`network`) | Structural prominence | Not real-world influence |
+
+
 ## What's new in v18.19.0 — Dashboard: Search & compare tab
 
 - **New dashboard tab "Search & compare v18"** (run with `streamlit run hn_dashboard.py`):
@@ -550,6 +627,8 @@ hn_*.py                analytics modules: cleaning, NLP, benchmarks, walk-forwar
                        explainability, temporal, cohort/drift, recommendations, graph, network,
                        robustness, live monitoring, digest, server, dashboard
 test_*.py              automated unit and integration tests
+generate_figures.py    regenerates the fig_*.png charts used in this README
+fig_*.png              architecture diagram, 3D views, charts and graphs
 NN_*.ipynb             notebooks (core, Spark, NLP, monitoring, v7-v17 research)
 demo_stories.jsonl     synthetic demo dataset
 tests.yml              GitHub Actions workflow (place at .github/workflows/tests.yml)
